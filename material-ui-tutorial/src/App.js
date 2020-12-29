@@ -35,7 +35,7 @@ const App = () => {
         <PageHeader
           title="Page Header"
           subtitle="Page Description"
-          icon={<PeopleOutlineTwoToneIcon />}
+          icon={<PeopleOutlineTwoToneIcon fontSize="large" />}
         />
       </div>
       <CssBaseline />
