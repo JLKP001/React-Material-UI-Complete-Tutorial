@@ -2,6 +2,7 @@ import React from "react";
 import { SideMenu } from "./components/SideMenu";
 import { Header } from "./components/Header";
 import { PageHeader } from "./components/PageHeader";
+import { Employees } from "./pages/Employees/Employees";
 import {
   createMuiTheme,
   CssBaseline,
@@ -32,11 +33,7 @@ const App = () => {
       <SideMenu />
       <div className={classes.appMain}>
         <Header />
-        <PageHeader
-          title="Page Header"
-          subtitle="Page Description"
-          icon={<PeopleOutlineTwoToneIcon fontSize="large" />}
-        />
+        <Employees />
       </div>
       <CssBaseline />
     </ThemeProvider>
