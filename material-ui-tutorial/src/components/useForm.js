@@ -7,22 +7,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const useForm = (initialValues) => {
+export const useForm = (initialValues, validateOnChange = false, validate) => {
   const [values, setValues] = useState(initialValues);
+  const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
+    if (validateOnChange) {
+      validate({ [name]: value });
+    }
   };
 
-  return { values, setValues, handleInputChange };
+  const resetForm = () => {
+    setValues(initialValues);
+    setErrors({});
+  };
+
+  return { values, setValues, handleInputChange, errors, setErrors, resetForm };
 };
 
-export const Form = (props) => {
+export const Form = ({ children, ...other }) => {
   const classes = useStyles();
   return (
-    <form className={classes.root} autoComplete="off">
-      {props.children}
+    <form className={classes.root} autoComplete="off" {...other}>
+      {children}
     </form>
   );
 };
