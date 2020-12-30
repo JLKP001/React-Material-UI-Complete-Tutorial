@@ -51,7 +51,10 @@ export const EmployeeForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateForm()) window.alert("Submit Success!");
+    if (validateForm()) {
+      employeeService.insertEmployee(values);
+      resetForm();
+    }
   };
 
   return (
