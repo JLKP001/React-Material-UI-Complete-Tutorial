@@ -1,7 +1,6 @@
 import React from "react";
 import { SideMenu } from "./components/SideMenu";
 import { Header } from "./components/Header";
-import { PageHeader } from "./components/PageHeader";
 import { Employees } from "./pages/Employees/Employees";
 import {
   createMuiTheme,
@@ -9,7 +8,6 @@ import {
   makeStyles,
   ThemeProvider,
 } from "@material-ui/core";
-import PeopleOutlineTwoToneIcon from "@material-ui/icons/PeopleOutlineTwoTone";
 
 const theme = createMuiTheme({
   palette: {

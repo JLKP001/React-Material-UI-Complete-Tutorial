@@ -2,6 +2,7 @@ import { Grid } from "@material-ui/core";
 import React from "react";
 import { useForm, Form } from "../../components/useForm";
 import { Controls } from "../../components/controls/Controls";
+import * as employeeService from "../../services/employeeService";
 
 const genderItems = [
   { id: "male", title: "Male" },
@@ -40,6 +41,18 @@ export const EmployeeForm = () => {
             value={values.email}
             onChange={handleInputChange}
           />
+          <Controls.Input
+            label="Mobile"
+            name="mobile"
+            value={values.mobile}
+            onChange={handleInputChange}
+          />
+          <Controls.Input
+            label="City"
+            name="city"
+            value={values.city}
+            onChange={handleInputChange}
+          />
         </Grid>
         <Grid item xs={6}>
           <Controls.RadioGroup
@@ -48,6 +61,25 @@ export const EmployeeForm = () => {
             value={values.gender}
             onChange={handleInputChange}
             items={genderItems}
+          />
+          <Controls.Select
+            name="departmentId"
+            label="Department"
+            value={values.departmentId}
+            onChange={handleInputChange}
+            options={employeeService.getDepartmentCollection()}
+          />
+          <Controls.DatePicker
+            name="hireDate"
+            label="Hire Date"
+            value={values.hireDate}
+            onChange={handleInputChange}
+          />
+          <Controls.Checkbox
+            name="isPermanent"
+            label="Permanent Employee"
+            value={values.isPermanent}
+            onChange={handleInputChange}
           />
         </Grid>
       </Grid>
