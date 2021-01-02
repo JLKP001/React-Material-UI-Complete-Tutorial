@@ -17,6 +17,8 @@ import { Controls } from "../../components/controls/Controls";
 import SearchIcon from "@material-ui/icons/Search";
 import AddIcon from "@material-ui/icons/Add";
 import { Popup } from "../../components/Popup";
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   pageContent: { margin: theme.spacing(5), padding: theme.spacing(3) },
@@ -28,11 +30,13 @@ const headCells = [
   { id: "fullName", label: "Employee Name" },
   { id: "email", label: "Email" },
   { id: "mobile", label: "Mobile Number" },
-  { id: "department", label: "Department", disableSorting: true },
+  { id: "department", label: "Department" },
+  { id: "actions", label: "Actions", disableSorting: true },
 ];
 
 export const Employees = () => {
   const classes = useStyles();
+  const [recordForEdit, setRecordForEdit] = useState(null);
   const [records, setRecords] = useState(employeeService.getAllEmployees());
   const [filterFn, setFilterFn] = useState({
     fn: (items) => {
@@ -62,10 +66,20 @@ export const Employees = () => {
   };
 
   const addOrEdit = (employee, resetForm) => {
-    employeeService.insertEmployee(employee);
+    if (employee.id == 0) {
+      employeeService.insertEmployee(employee);
+    } else {
+      employeeService.updateEmployee(employee);
+    }
     resetForm();
+    setRecordForEdit(null);
     setOpenPopup(false);
     setRecords(employeeService.getAllEmployees());
+  };
+
+  const openInPopup = (item) => {
+    setRecordForEdit(item);
+    setOpenPopup(true);
   };
 
   return (
@@ -94,7 +108,10 @@ export const Employees = () => {
             variant="outlined"
             startIcon={<AddIcon />}
             className={classes.newButton}
-            onClick={() => setOpenPopup(true)}
+            onClick={() => {
+              setRecordForEdit(null);
+              setOpenPopup(true);
+            }}
           />
         </Toolbar>
         <TableContainer>
@@ -106,6 +123,19 @@ export const Employees = () => {
                 <TableCell>{item.email}</TableCell>
                 <TableCell>{item.mobile}</TableCell>
                 <TableCell>{item.department}</TableCell>
+                <TableCell>
+                  <Controls.ActionButton
+                    color="primary"
+                    onClick={() => {
+                      openInPopup(item);
+                    }}
+                  >
+                    <EditOutlinedIcon fontSize="small" />
+                  </Controls.ActionButton>
+                  <Controls.ActionButton color="secondary">
+                    <CloseIcon fontSize="small" />
+                  </Controls.ActionButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -117,7 +147,7 @@ export const Employees = () => {
         setOpenPopup={setOpenPopup}
         title="Employee Form"
       >
-        <EmployeeForm addOrEdit={addOrEdit} />
+        <EmployeeForm recordForEdit={recordForEdit} addOrEdit={addOrEdit} />
       </Popup>
     </>
   );
