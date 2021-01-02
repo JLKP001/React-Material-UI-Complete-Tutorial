@@ -22,7 +22,7 @@ const initialValues = {
   isPermanent: false,
 };
 
-export const EmployeeForm = () => {
+export const EmployeeForm = ({ addOrEdit }) => {
   const validateForm = (fieldValues = values) => {
     let temp = { ...errors };
     if ("fullName" in fieldValues)
@@ -52,8 +52,7 @@ export const EmployeeForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      employeeService.insertEmployee(values);
-      resetForm();
+      addOrEdit(values, resetForm);
     }
   };
 

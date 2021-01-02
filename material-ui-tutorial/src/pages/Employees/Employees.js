@@ -15,10 +15,13 @@ import { useTable } from "../../components/useTable";
 import * as employeeService from "../../services/employeeService";
 import { Controls } from "../../components/controls/Controls";
 import SearchIcon from "@material-ui/icons/Search";
+import AddIcon from "@material-ui/icons/Add";
+import { Popup } from "../../components/Popup";
 
 const useStyles = makeStyles((theme) => ({
   pageContent: { margin: theme.spacing(5), padding: theme.spacing(3) },
   searchInput: { width: "75%" },
+  newButton: { position: "absolute", right: "10px" },
 }));
 
 const headCells = [
@@ -36,6 +39,7 @@ export const Employees = () => {
       return items;
     },
   });
+  const [openPopup, setOpenPopup] = useState(false);
 
   const {
     TableContainer,
@@ -57,6 +61,13 @@ export const Employees = () => {
     });
   };
 
+  const addOrEdit = (employee, resetForm) => {
+    employeeService.insertEmployee(employee);
+    resetForm();
+    setOpenPopup(false);
+    setRecords(employeeService.getAllEmployees());
+  };
+
   return (
     <>
       <PageHeader
@@ -65,7 +76,6 @@ export const Employees = () => {
         icon={<PeopleOutlineTwoToneIcon fontSize="large" />}
       />
       <Paper className={classes.pageContent}>
-        {/* <EmployeeForm /> */}
         <Toolbar>
           <Controls.Input
             label="Search Employee"
@@ -78,6 +88,13 @@ export const Employees = () => {
               ),
             }}
             onChange={handleSearch}
+          />
+          <Controls.Button
+            text="Add New"
+            variant="outlined"
+            startIcon={<AddIcon />}
+            className={classes.newButton}
+            onClick={() => setOpenPopup(true)}
           />
         </Toolbar>
         <TableContainer>
@@ -95,6 +112,13 @@ export const Employees = () => {
         </TableContainer>
         <TablePagination />
       </Paper>
+      <Popup
+        openPopup={openPopup}
+        setOpenPopup={setOpenPopup}
+        title="Employee Form"
+      >
+        <EmployeeForm addOrEdit={addOrEdit} />
+      </Popup>
     </>
   );
 };
